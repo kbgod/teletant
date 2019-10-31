@@ -12,7 +12,6 @@ use Askoldex\Teletant\Entities\Message;
 use Askoldex\Teletant\Entities\Messages;
 use Askoldex\Teletant\Entities\Poll;
 use Askoldex\Teletant\Entities\StickerSet;
-use Askoldex\Teletant\Entities\Update;
 use Askoldex\Teletant\Entities\Updates;
 use Askoldex\Teletant\Entities\User;
 use Askoldex\Teletant\Entities\UserProfilePhotos;
@@ -23,7 +22,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Pool;
-use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class Api
@@ -37,6 +35,7 @@ class Api
     private $hook_used = false;
 
     private $webhook_blacklist = [
+        'getUpdates',
         'getChat',
         'getChatAdministrators',
         'getChatMember',
@@ -54,7 +53,10 @@ class Api
         $this->setSettings($settings);
 
         $this->setClient(new Client([
-            'base_uri' => $this->getApiUrl()
+            'base_uri' => $this->getApiUrl(),
+            'request.options' => [
+                'proxy' => $this->getSettings()->getProxy(),
+            ],
         ]));
     }
 

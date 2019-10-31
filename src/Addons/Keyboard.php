@@ -2,7 +2,10 @@
 
 namespace Askoldex\Teletant\Addons;
 
-
+/**
+ * Use next gen Keyboard addon - Menux
+ * @deprecated
+ */
 class Keyboard
 {
     const INLINE = 'inline_keyboard';

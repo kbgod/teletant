@@ -93,19 +93,9 @@ class Bot
         }
     }
 
-    /**
-     * With Middleware
-     * @param string|array $middlewares
-     * @param callable $call
-     * @return $this
-     */
-    public function wm($middlewares, callable $call)
+    public function listen($data = null)
     {
-        $original = $this->boot()->middlewares;
-        $selectedMiddlewares = $this->getMiddlewares($middlewares);
-        $this->middlewares = array_merge($original, $selectedMiddlewares);
-        $call($this);
-        $this->middlewares = $original;
-        return $this;
+        $data = $data == null ? file_get_contents('php://input') : $data;
+        $this->handleUpdate(new Update(json_decode($data)));
     }
 }
