@@ -14,7 +14,7 @@ trait Validator
         'string' => ['pattern' => '[\w\s]+', 'spaces' => true],
         'word' => ['pattern' => '[\w]+', 'spaces' => false],
         'any' => ['pattern' => '(.*?)', 'spaces' => false],
-        'char' => '[\w]',
+        'char' => ['pattern' => '[\w]', 'spaces' => false],
     ];
 
     /**

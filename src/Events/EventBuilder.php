@@ -96,7 +96,7 @@ trait EventBuilder
         $current = $this->currentMiddlewares;
         $data = $this->parseField($text);
         return $this->eventHandler->handle(function (Context $ctx) use ($data, $handler, $current, $validator) {
-            if ($ctx->getText() == null) return false;
+            if (!$ctx->callbackQuery()->isEmpty() or $ctx->getText() == null) return false;
             foreach ($data['patterns'] as $pattern) {
                 if (preg_match($this->makeRegex($pattern), $ctx->getText(), $matches)) {
                     $parsedVariables = $this->parseVariables($matches);
@@ -160,7 +160,7 @@ trait EventBuilder
         }
         $current = $this->currentMiddlewares;
         return $this->eventHandler->handle(function (Context $ctx) use ($texts, $handler, $current, $validator) {
-            if ($ctx->getText() == null) return false;
+            if (!$ctx->callbackQuery()->isEmpty() or $ctx->getText() == null) return false;
             foreach ($texts as $text) {
                 $data = $this->parseField($text);
                 foreach ($data['patterns'] as $pattern) {

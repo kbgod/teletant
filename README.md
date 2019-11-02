@@ -27,3 +27,13 @@ $settings = new Settings('token');
 $settings->setHookOnFirstRequest(false);
 $bot = new Bot($settings);
 ```
+
+#### Run as long poll (getUpdates)
+```php
+$bot->polling();
+```
+
+#### Run as webhook (list webhook address)
+```php
+$bot->listen();
+```

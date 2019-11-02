@@ -500,6 +500,34 @@ class Context
     }
 
     /**
+     * @param $id
+     * @param $results
+     * @param array $options
+     * @return TeletantHookResponse|TeletantResponse|\Closure
+     * @throws Exception\TeletantException
+     */
+    public function ansInlineQuery($id, $results, $options = [])
+    {
+        $fields = ['inline_query_id' => $id, 'results' => (string) $results];
+        $fields = $fields+$options;
+        return $this->api->answerInlineQuery($fields);
+    }
+
+    /**
+     * @param $id
+     * @param $results
+     * @param array $options
+     * @return TeletantHookResponse|TeletantResponse|\Closure
+     * @throws Exception\TeletantException
+     */
+    public function replyInlineQuery($results, $options = [])
+    {
+        $fields = ['inline_query_id' => $this->getInlineQueryID(), 'results' => (string) $results];
+        $fields = $fields+$options;
+        return $this->api->answerInlineQuery($fields);
+    }
+
+    /**
      * @param $fileID
      * @return File
      * @throws Exception\TeletantException
