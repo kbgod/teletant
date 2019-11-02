@@ -293,6 +293,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function forwardMessageAsync(array $params)
+    {
+        return $this->invokeAction('forwardMessage', $params, false, true);
+    }
+
+    /**
      * @param $params
      * @return Message
      * @throws TeletantException
@@ -300,6 +310,16 @@ class Api
     public function sendPhoto($params)
     {
         return new Message($this->uploadFile('sendPhoto', $params));
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function sendPhotoAsync(array $params)
+    {
+        return $this->uploadFile('sendPhoto', $params, true);
     }
 
     /**
@@ -313,6 +333,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function sendAudioAsync(array $params)
+    {
+        return $this->uploadFile('sendAudio', $params, true);
+    }
+
+    /**
      * @param $params
      * @return Message
      * @throws TeletantException
@@ -320,6 +350,16 @@ class Api
     public function sendDocument($params)
     {
         return new Message($this->uploadFile('sendDocument', $params));
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function sendDocumentAsync(array $params)
+    {
+        return $this->uploadFile('sendDocument', $params, true);
     }
 
     /**
@@ -333,6 +373,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function sendStickerAsync(array $params)
+    {
+        return $this->uploadFile('sendSticker', $params, true);
+    }
+
+    /**
      * @param $params
      * @return TeletantResponse
      * @throws TeletantException
@@ -340,6 +390,16 @@ class Api
     public function createNewStickerSet($params)
     {
         return $this->uploadFile('createNewStickerSet', $params);
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function createNewStickerSetAsync(array $params)
+    {
+        return $this->uploadFile('createNewStickerSet', $params, true);
     }
 
     /**
@@ -353,6 +413,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function addStickerToSetAsync(array $params)
+    {
+        return $this->uploadFile('addStickerToSet', $params, true);
+    }
+
+    /**
      * @param $params
      * @return StickerSet
      * @throws TeletantException
@@ -360,6 +430,16 @@ class Api
     public function getStickerSet($params)
     {
         return new StickerSet($this->invokeAction('getStickerSet', $params));
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function getStickerSetAsync(array $params)
+    {
+        return $this->invokeAction('getStickerSet', $params, false, true);
     }
 
     /**
@@ -373,6 +453,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function setStickerPositionInSetAsync(array $params)
+    {
+        return $this->invokeAction('setStickerPositionInSet', $params, false, true);
+    }
+
+    /**
      * @param $params
      * @return TeletantResponse
      * @throws TeletantException
@@ -380,6 +470,16 @@ class Api
     public function deleteStickerFromSet($params)
     {
         return $this->invokeAction('deleteStickerFromSet', $params);
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function deleteStickerFromSetAsync(array $params)
+    {
+        return $this->invokeAction('deleteStickerFromSet', $params, false, true);
     }
 
     /**
@@ -393,6 +493,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function uploadStickerFileAsync(array $params)
+    {
+        return $this->uploadFile('uploadStickerFile', $params, true);
+    }
+
+    /**
      * @param $params
      * @return Message
      * @throws TeletantException
@@ -400,6 +510,16 @@ class Api
     public function sendVideo($params)
     {
         return new Message($this->uploadFile('sendVideo', $params));
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function sendVideoAsync(array $params)
+    {
+        return $this->uploadFile('sendVideo', $params, true);
     }
 
     /**
@@ -413,6 +533,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function sendAnimationAsync(array $params)
+    {
+        return $this->uploadFile('sendAnimation', $params, true);
+    }
+
+    /**
      * @param $params
      * @return Message
      * @throws TeletantException
@@ -420,6 +550,16 @@ class Api
     public function sendVoice($params)
     {
         return new Message($this->uploadFile('sendVoice', $params));
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function sendVoiceAsync(array $params)
+    {
+        return $this->uploadFile('sendVoice', $params, true);
     }
 
     /**
@@ -433,6 +573,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function sendVideoNoteAsync(array $params)
+    {
+        return $this->uploadFile('sendVideoNote', $params, true);
+    }
+
+    /**
      * @param $params
      * @return Messages
      * @throws TeletantException
@@ -440,7 +590,16 @@ class Api
     public function sendMediaGroup($params)
     {
         return new Messages($this->uploadFile('sendMediaGroup', $params));
+    }
 
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function sendMediaGroupAsync(array $params)
+    {
+        return $this->uploadFile('sendMediaGroup', $params, true);
     }
 
     /**
@@ -454,6 +613,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function sendLocationAsync(array $params)
+    {
+        return $this->invokeAction('sendLocation', $params, false, true);
+    }
+
+    /**
      * @param $params
      * @return Message
      * @throws TeletantException
@@ -461,6 +630,16 @@ class Api
     public function editMessageLiveLocation($params)
     {
         return new Message($this->invokeAction('editMessageLiveLocation', $params));
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function editMessageLiveLocationAsync(array $params)
+    {
+        return $this->invokeAction('editMessageLiveLocation', $params, false, true);
     }
 
     /**
@@ -474,6 +653,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function stopMessageLiveLocationAsync(array $params)
+    {
+        return $this->invokeAction('stopMessageLiveLocation', $params, false, true);
+    }
+
+    /**
      * @param $params
      * @return Message
      * @throws TeletantException
@@ -481,6 +670,16 @@ class Api
     public function sendVenue($params)
     {
         return new Message($this->invokeAction('sendVenue', $params));
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function sendVenueAsync(array $params)
+    {
+        return $this->invokeAction('sendVenue', $params, false, true);
     }
 
     /**
@@ -494,6 +693,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function sendContactAsync(array $params)
+    {
+        return $this->invokeAction('sendContact', $params, false, true);
+    }
+
+    /**
      * @param $params
      * @return Message
      * @throws TeletantException
@@ -501,6 +710,16 @@ class Api
     public function sendPoll($params)
     {
         return new Message($this->invokeAction('sendPoll', $params));
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function sendPollAsync(array $params)
+    {
+        return $this->invokeAction('sendPoll', $params, false, true);
     }
 
     /**
@@ -514,6 +733,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function sendChatActionAsync(array $params)
+    {
+        return $this->invokeAction('sendChatAction', $params, false, true);
+    }
+
+    /**
      * @param $params
      * @return UserProfilePhotos
      * @throws TeletantException
@@ -521,6 +750,16 @@ class Api
     public function getUserProfilePhotos($params)
     {
         return new UserProfilePhotos($this->invokeAction('getUserProfilePhotos', $params));
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function getUserProfilePhotosAsync(array $params)
+    {
+        return $this->invokeAction('getUserProfilePhotos', $params, false, true);
     }
 
     /**
@@ -534,6 +773,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function getFileAsync(array $params)
+    {
+        return $this->invokeAction('getFile', $params, false, true);
+    }
+
+    /**
      * @param $params
      * @return TeletantHookResponse|TeletantResponse|Closure
      * @throws TeletantException
@@ -541,6 +790,16 @@ class Api
     public function kickChatMember($params)
     {
         return $this->invokeAction('kickChatMember', $params);
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function kickChatMemberAsync(array $params)
+    {
+        return $this->invokeAction('kickChatMember', $params, false, true);
     }
 
     /**
@@ -554,6 +813,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function unbanChatMemberAsync(array $params)
+    {
+        return $this->invokeAction('unbanChatMember', $params, false, true);
+    }
+
+    /**
      * @param $params
      * @return TeletantHookResponse|TeletantResponse|Closure
      * @throws TeletantException
@@ -561,6 +830,16 @@ class Api
     public function restrictChatMember($params)
     {
         return $this->invokeAction('restrictChatMember', $params);
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function restrictChatMemberAsync(array $params)
+    {
+        return $this->invokeAction('restrictChatMember', $params, false, true);
     }
 
     /**
@@ -574,6 +853,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function promoteChatMemberAsync(array $params)
+    {
+        return $this->invokeAction('promoteChatMember', $params, false, true);
+    }
+
+    /**
      * @param $params
      * @return TeletantHookResponse|TeletantResponse|Closure
      * @throws TeletantException
@@ -581,6 +870,16 @@ class Api
     public function exportChatInviteLink($params)
     {
         return $this->invokeAction('exportChatInviteLink', $params);
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function exportChatInviteLinkAsync(array $params)
+    {
+        return $this->invokeAction('exportChatInviteLink', $params, false, true);
     }
 
     /**
@@ -594,6 +893,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function setChatPhotoAsync(array $params)
+    {
+        return $this->invokeAction('setChatPhoto', $params, false, true);
+    }
+
+    /**
      * @param $params
      * @return TeletantHookResponse|TeletantResponse|Closure
      * @throws TeletantException
@@ -601,6 +910,16 @@ class Api
     public function deleteChatPhoto($params)
     {
         return $this->invokeAction('deleteChatPhoto', $params);
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function deleteChatPhotoAsync(array $params)
+    {
+        return $this->invokeAction('deleteChatPhoto', $params, false, true);
     }
 
     /**
@@ -614,6 +933,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function setChatTitleAsync(array $params)
+    {
+        return $this->invokeAction('setChatTitle', $params, false, true);
+    }
+
+    /**
      * @param $params
      * @return TeletantHookResponse|TeletantResponse|Closure
      * @throws TeletantException
@@ -621,6 +950,16 @@ class Api
     public function setChatDescription($params)
     {
         return $this->invokeAction('setChatDescription', $params);
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function setChatDescriptionAsync(array $params)
+    {
+        return $this->invokeAction('setChatDescription', $params, false, true);
     }
 
     /**
@@ -634,6 +973,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function pinChatMessageAsync(array $params)
+    {
+        return $this->invokeAction('pinChatMessage', $params, false, true);
+    }
+
+    /**
      * @param $params
      * @return TeletantHookResponse|TeletantResponse|Closure
      * @throws TeletantException
@@ -641,6 +990,16 @@ class Api
     public function unpinChatMessage($params)
     {
         return $this->invokeAction('unpinChatMessage', $params);
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function unpinChatMessageAsync(array $params)
+    {
+        return $this->invokeAction('unpinChatMessage', $params, false, true);
     }
 
     /**
@@ -654,6 +1013,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function leaveChatAsync(array $params)
+    {
+        return $this->invokeAction('leaveChat', $params, false, true);
+    }
+
+    /**
      * @param $params
      * @return Chat
      * @throws TeletantException
@@ -661,6 +1030,16 @@ class Api
     public function getChat($params)
     {
         return new Chat($this->invokeAction('getChat', $params));
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function getChatAsync(array $params)
+    {
+        return $this->invokeAction('getChat', $params, false, true);
     }
 
     /**
@@ -674,6 +1053,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function getChatAdministratorsAsync(array $params)
+    {
+        return $this->invokeAction('getChatAdministrators', $params, false, true);
+    }
+
+    /**
      * @param $params
      * @return TeletantHookResponse|TeletantResponse|Closure
      * @throws TeletantException
@@ -681,6 +1070,16 @@ class Api
     public function getChatMembersCount($params)
     {
         return $this->invokeAction('getChatMembersCount', $params);
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function getChatMembersCountAsync(array $params)
+    {
+        return $this->invokeAction('getChatMembersCount', $params, false, true);
     }
 
     /**
@@ -694,6 +1093,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function getChatMemberAsync(array $params)
+    {
+        return $this->invokeAction('getChatMember', $params, false, true);
+    }
+
+    /**
      * @param $params
      * @return TeletantHookResponse|TeletantResponse|Closure
      * @throws TeletantException
@@ -701,6 +1110,16 @@ class Api
     public function setChatStickerSet($params)
     {
         return $this->invokeAction('setChatStickerSet', $params);
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function setChatStickerSetAsync(array $params)
+    {
+        return $this->invokeAction('setChatStickerSet', $params, false, true);
     }
 
     /**
@@ -714,6 +1133,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function deleteChatStickerSetAsync(array $params)
+    {
+        return $this->invokeAction('deleteChatStickerSet', $params, false, true);
+    }
+
+    /**
      * @param $params
      * @return TeletantHookResponse|TeletantResponse|Closure
      * @throws TeletantException
@@ -721,6 +1150,16 @@ class Api
     public function answerCallbackQuery($params)
     {
         return $this->invokeAction('answerCallbackQuery', $params);
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function answerCallbackQueryAsync(array $params)
+    {
+        return $this->invokeAction('answerCallbackQuery', $params, false, true);
     }
 
     /**
@@ -734,6 +1173,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function editMessageTextAsync(array $params)
+    {
+        return $this->invokeAction('editMessageText', $params, false, true);
+    }
+
+    /**
      * @param $params
      * @return Message
      * @throws TeletantException
@@ -741,6 +1190,16 @@ class Api
     public function editMessageCaption($params)
     {
         return new Message($this->invokeAction('editMessageCaption', $params));
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function editMessageCaptionAsync(array $params)
+    {
+        return $this->invokeAction('editMessageCaption', $params, false, true);
     }
 
     /**
@@ -754,6 +1213,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function editMessageMediaAsync(array $params)
+    {
+        return $this->invokeAction('editMessageMedia', $params, false, true);
+    }
+
+    /**
      * @param $params
      * @return Message
      * @throws TeletantException
@@ -761,6 +1230,16 @@ class Api
     public function editMessageReplyMarkup($params)
     {
         return new Message($this->invokeAction('editMessageReplyMarkup', $params));
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function editMessageReplyMarkupAsync(array $params)
+    {
+        return $this->invokeAction('editMessageReplyMarkup', $params, false, true);
     }
 
     /**
@@ -774,6 +1253,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function stopPollAsync(array $params)
+    {
+        return $this->invokeAction('stopPoll', $params, false, true);
+    }
+
+    /**
      * @param $params
      * @return TeletantHookResponse|TeletantResponse|Closure
      * @throws TeletantException
@@ -781,6 +1270,16 @@ class Api
     public function deleteMessage($params)
     {
         return $this->invokeAction('deleteMessage', $params);
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function deleteMessageAsync(array $params)
+    {
+        return $this->invokeAction('deleteMessage', $params, false, true);
     }
 
     /**
@@ -794,6 +1293,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function answerInlineQueryAsync(array $params)
+    {
+        return $this->invokeAction('answerInlineQuery', $params, false, true);
+    }
+
+    /**
      * @param $params
      * @return Message
      * @throws TeletantException
@@ -801,6 +1310,16 @@ class Api
     public function sendInvoice($params)
     {
         return new Message($this->invokeAction('sendInvoice', $params));
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function sendInvoiceAsync(array $params)
+    {
+        return $this->invokeAction('sendInvoice', $params, false, true);
     }
 
     /**
@@ -814,6 +1333,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function answerShippingQueryAsync(array $params)
+    {
+        return $this->invokeAction('answerShippingQuery', $params, false, true);
+    }
+
+    /**
      * @param $params
      * @return TeletantHookResponse|TeletantResponse|Closure
      * @throws TeletantException
@@ -821,6 +1350,16 @@ class Api
     public function answerPreCheckoutQuery($params)
     {
         return $this->invokeAction('answerPreCheckoutQuery', $params);
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function answerPreCheckoutQueryAsync(array $params)
+    {
+        return $this->invokeAction('answerPreCheckoutQuery', $params, false, true);
     }
 
     /**
@@ -834,6 +1373,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function setPassportDataErrorsAsync(array $params)
+    {
+        return $this->invokeAction('setPassportDataErrors', $params, false, true);
+    }
+
+    /**
      * @param $params
      * @return Message
      * @throws TeletantException
@@ -841,6 +1390,16 @@ class Api
     public function sendGame($params)
     {
         return new Message($this->invokeAction('sendGame', $params));
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function sendGameAsync(array $params)
+    {
+        return $this->invokeAction('sendGame', $params, false, true);
     }
 
     /**
@@ -854,6 +1413,16 @@ class Api
     }
 
     /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function setGameScoreAsync(array $params)
+    {
+        return $this->invokeAction('setGameScore', $params, false, true);
+    }
+
+    /**
      * @param $params
      * @return GameHighScores
      * @throws TeletantException
@@ -861,6 +1430,16 @@ class Api
     public function getGameHighScores($params)
     {
         return new GameHighScores($this->invokeAction('getGameHighScores', $params));
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function getGameHighScoresAsync(array $params)
+    {
+        return $this->invokeAction('getGameHighScores', $params, false, true);
     }
 
 

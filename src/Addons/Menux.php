@@ -5,6 +5,7 @@ namespace Askoldex\Teletant\Addons;
 
 
 use Askoldex\Teletant\Context;
+use Askoldex\Teletant\Exception\MenuxException;
 
 class Menux
 {
@@ -12,6 +13,10 @@ class Menux
     const INLINE_KEYBOARD = 'inline_keyboard';
 
     private static $associations = [];
+    /**
+     * @var Menux[] $links
+     */
+    private static $links = [];
 
     private static $default = self::KEYBOARD;
     private static $defaultProperties = [];
@@ -178,12 +183,33 @@ class Menux
     private static $index = 0;
 
     /**
-     * @param string|null $name
+     * @param string $name
+     * @param string|null $key
      * @return self
+     * @throws MenuxException
      */
-    public static function Create(string $name = null): self
+    public static function Create(string $name, string $key = null): self
     {
+        if($key != null) {
+            if(array_key_exists($key, self::$links))
+                throw new MenuxException('Key "' . $key . '" already exists');
+            self::$links[$key] = &self::$menus[self::$index];
+        }
         return self::$menus[self::$index] = new self($name, self::$index++);
+    }
+
+    /**
+     * @param string $key
+     * @return Menux
+     * @throws MenuxException
+     */
+    public static function Get(string $key): self
+    {
+        $menu = self::$links[$key];
+        if($menu instanceof self)
+            return self::$links[$key];
+        else
+            throw new MenuxException('Key "' . $key . '" is undefined');
     }
 
     /**

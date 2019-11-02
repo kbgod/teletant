@@ -16,7 +16,6 @@ use Askoldex\Teletant\Entities\ShippingQuery;
 use Askoldex\Teletant\Entities\Sticker;
 use Askoldex\Teletant\Entities\Update;
 use Askoldex\Teletant\Entities\User;
-use Askoldex\Teletant\Exception\StageException;
 use Askoldex\Teletant\Interfaces\StorageInterface;
 use Askoldex\Teletant\States\Scene;
 use Askoldex\Teletant\States\Stage;
@@ -135,9 +134,9 @@ class Context
     /**
      * @param string $variable
      * @param $object
-     * @return $this
+     * @return self
      */
-    public function with(string $variable, $object)
+    public function with(string $variable, $object): self
     {
         $this->Formatter()->associate($variable, $object);
         return $this;
