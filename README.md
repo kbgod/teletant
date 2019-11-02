@@ -2,9 +2,9 @@
 ###### Authors: [@askoldex](https://t.me/monarkhov), [@uniqkic](https://t.me/uniqkic)
 ###### Inspiration: [telegraf](https://github.com/telegraf/telegraf), [irazasyed/telegram-bot-sdk](https://github.com/irazasyed/telegram-bot-sdk)
 
-## Documentation
+## Examples
 
-Coming soon...
+[Click](https://github.com/askoldex/teletant-examples)
 
 ## Getting Started
 #### Requirements
