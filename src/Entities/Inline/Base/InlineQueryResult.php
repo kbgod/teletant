@@ -11,7 +11,7 @@ class InlineQueryResult extends Base
         return $this;
     }
 
-    public function keyboard(string $keyboard)
+    public function keyboard(array $keyboard)
     {
         $this->out['reply_markup'] = $keyboard;
         return $this;
