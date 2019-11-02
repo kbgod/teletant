@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "keywords": ["telegram", "teletant", "bot", "PHP", "video", "stickers", "audio", "files"],
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "guzzlehttp/guzzle": "*",
         "askoldex/formatter": "^1.0",
         "ext-mbstring": "*",
