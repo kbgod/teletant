@@ -5,6 +5,7 @@ namespace Askoldex\Teletant;
 
 use Askoldex\Teletant\Entities\Update;
 use Askoldex\Teletant\Events\EventBuilder;
+use Askoldex\Teletant\Exception\TeletantException;
 use Askoldex\Teletant\Middleware\Dispatcher;
 
 class Bot
@@ -93,9 +94,15 @@ class Bot
         }
     }
 
+    /**
+     * @param null $data
+     * @throws TeletantException
+     */
     public function listen($data = null)
     {
         $data = $data == null ? file_get_contents('php://input') : $data;
-        $this->handleUpdate(new Update(json_decode($data)));
+        if($data == null)
+            throw new TeletantException('Event data is empty');
+        $this->handleUpdate(new Update(json_decode($data, true)));
     }
 }
