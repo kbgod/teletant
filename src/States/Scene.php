@@ -41,7 +41,7 @@ class Scene
         return $this->name;
     }
 
-    public function enter($func)
+    public function onEnter($func)
     {
         $this->enter = new Event(
             function(Context $ctx) use ($func) {
@@ -51,7 +51,7 @@ class Scene
         );
     }
 
-    public function leave($func)
+    public function onLeave($func)
     {
         $this->leave = new Event(
             function(Context $ctx) use ($func) {
