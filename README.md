@@ -8,7 +8,7 @@
 
 ## Getting Started
 #### Requirements
-1. PHP 7.1
+1. PHP 7.2
 2. Composer
 
 #### Installation
