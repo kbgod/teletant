@@ -63,11 +63,13 @@ class Scene
 
     public function handleEnter(Context $ctx)
     {
-        $this->enter->invoke($ctx);
+        if($this->enter instanceof Event)
+            $this->enter->invoke($ctx);
     }
 
     public function handleLeave(Context $ctx)
     {
-        $this->leave->invoke($ctx);
+        if($this->leave instanceof Event)
+            $this->leave->invoke($ctx);
     }
 }
