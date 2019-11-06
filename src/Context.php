@@ -57,11 +57,12 @@ class Context
 
     /**
      * @param string $variable
+     * @param string|null $default
      * @return string
      */
-    public function var(string $variable)
+    public function var(string $variable, string $default = '')
     {
-        return $this->variables[$variable] ?? '';
+        return $this->variables[$variable] ?? $default;
     }
 
     /**
@@ -231,7 +232,16 @@ class Context
 
     public function getFrom(): User
     {
-        return $this->getMessage()->from();
+        if(!$this->update()->message()->isEmpty())                  return $this->update()->message()->from();
+        elseif(!$this->update()->editedMessage()->isEmpty())        return $this->update()->editedMessage()->from();
+        elseif(!$this->update()->callbackQuery()->isEmpty())        return $this->update()->callbackQuery()->from();
+        elseif(!$this->update()->inlineQuery()->isEmpty())          return $this->update()->inlineQuery()->from();
+        elseif(!$this->update()->channelPost()->isEmpty())          return $this->update()->channelPost()->from();
+        elseif(!$this->update()->editedChannelPost()->isEmpty())    return $this->update()->editedChannelPost()->from();
+        elseif(!$this->update()->shippingQuery()->isEmpty())        return $this->update()->shippingQuery()->from();
+        elseif(!$this->update()->preCheckoutQuery()->isEmpty())     return $this->update()->preCheckoutQuery()->from();
+        elseif(!$this->update()->chosenInlineResult()->isEmpty())   return $this->update()->chosenInlineResult()->from();
+        else                                                        return new User([]);
     }
 
     public function getChat(): Chat
@@ -322,14 +332,14 @@ class Context
     // Кастомные методы
 
     /**
-     * @param $text
-     * @param null $keyboard
+     * @param string $text
+     * @param string $keyboard
      * @param bool $reply_mode
      * @param array $options
      * @return Message
      * @throws Exception\TeletantException
      */
-    public function reply($text, $keyboard = null, $reply_mode = false, $options = []): Message
+    public function reply(string $text, string $keyboard = null, bool $reply_mode = false, array $options = []): Message
     {
         $text = $this->Formatter()->format($text);
         $fields = ['chat_id' => $this->getChatID(), 'text' => $text, 'reply_markup' => (string)$keyboard];
@@ -339,44 +349,47 @@ class Context
     }
 
     /**
-     * @param $text
-     * @param null $keyboard
+     * @param string $text
+     * @param string $keyboard
      * @param bool $reply_mode
      * @param array $options
      * @return Message
      * @throws Exception\TeletantException
      */
-    public function replyHTML($text, $keyboard = null, $reply_mode = false, $options = []): Message
+    public function replyHTML(string $text, string $keyboard = null, bool $reply_mode = false, array $options = []): Message
     {
         $options['parse_mode'] = 'HTML';
+        $text = $this->Formatter()->format($text);
         return $this->reply($text, $keyboard, $reply_mode, $options);
     }
 
     /**
-     * @param $text
-     * @param null $keyboard
+     * @param string $text
+     * @param string $keyboard
      * @param bool $reply_mode
      * @param array $options
      * @return Message
      * @throws Exception\TeletantException
      */
-    public function replyMarkdown($text, $keyboard = null, $reply_mode = false, $options = []): Message
+    public function replyMarkdown(string $text, string $keyboard = null, bool $reply_mode = false, array $options = []): Message
     {
         $options['parse_mode'] = 'Markdown';
+        $text = $this->Formatter()->format($text);
         return $this->reply($text, $keyboard, $reply_mode, $options);
     }
 
     /**
      * @param $photo
-     * @param null $caption
-     * @param null $keyboard
+     * @param string $caption
+     * @param string $keyboard
      * @param bool $reply_mode
      * @param array $options
      * @return Message
      * @throws Exception\TeletantException
      */
-    public function replyPhoto($photo, $caption = null, $keyboard = null, $reply_mode = false, $options = []): Message
+    public function replyPhoto($photo, string $caption = null, string $keyboard = null, bool $reply_mode = false, array $options = []): Message
     {
+        $caption = $this->Formatter()->format($caption);
         $fields = ['chat_id' => $this->getChatID(), 'photo' => $photo, 'caption' => $caption, 'reply_markup' => (string)$keyboard];
         if ($reply_mode) $fields['reply_to_message_id'] = $this->getMessageID();
         $fields = $fields + $options;
@@ -385,15 +398,16 @@ class Context
 
     /**
      * @param $document
-     * @param null $caption
-     * @param null $keyboard
+     * @param string $caption
+     * @param string $keyboard
      * @param bool $reply_mode
      * @param array $options
      * @return Message
      * @throws Exception\TeletantException
      */
-    public function replyDocument($document, $caption = null, $keyboard = null, $reply_mode = false, $options = []): Message
+    public function replyDocument($document, string $caption = null, string $keyboard = null, bool $reply_mode = false, array $options = []): Message
     {
+        $caption = $this->Formatter()->format($caption);
         $fields = ['chat_id' => $this->getChatID(), 'document' => $document, 'caption' => $caption, 'reply_markup' => (string)$keyboard];
         if ($reply_mode) $fields['reply_to_message_id'] = $this->getMessageID();
         $fields = $fields + $options;
@@ -402,15 +416,16 @@ class Context
 
     /**
      * @param $audio
-     * @param null $caption
-     * @param null $keyboard
+     * @param string $caption
+     * @param string $keyboard
      * @param bool $reply_mode
      * @param array $options
      * @return Message
      * @throws Exception\TeletantException
      */
-    public function replyAudio($audio, $caption = null, $keyboard = null, $reply_mode = false, $options = []): Message
+    public function replyAudio($audio, string $caption = null, string $keyboard = null, bool $reply_mode = false, array $options = []): Message
     {
+        $caption = $this->Formatter()->format($caption);
         $fields = ['chat_id' => $this->getChatID(), 'audio' => $audio, 'caption' => $caption, 'reply_markup' => (string)$keyboard];
         if ($reply_mode) $fields['reply_to_message_id'] = $this->getMessageID();
         $fields = $fields + $options;
@@ -419,13 +434,13 @@ class Context
 
     /**
      * @param $video
-     * @param null $keyboard
+     * @param string $keyboard
      * @param bool $reply_mode
      * @param array $options
      * @return Message
      * @throws Exception\TeletantException
      */
-    public function replyVideo($video, $keyboard = null, $reply_mode = false, $options = []): Message
+    public function replyVideo($video, string $keyboard = null, bool $reply_mode = false, array $options = []): Message
     {
         $fields = ['chat_id' => $this->getChatID(), 'video' => $video, 'reply_markup' => (string)$keyboard];
         if ($reply_mode) $fields['reply_to_message_id'] = $this->getMessageID();
@@ -440,7 +455,7 @@ class Context
      * @return Messages
      * @throws Exception\TeletantException
      */
-    public function replyMediaGroup($media, $reply_mode = false, $disable_notification = false): Messages
+    public function replyMediaGroup($media, bool $reply_mode = false, bool $disable_notification = false): Messages
     {
         $fields = ['chat_id' => $this->getChatID(), 'media' => $media, 'disable_notification' => $disable_notification];
         if ($reply_mode) $fields['reply_to_message_id'] = $this->getMessageID();
@@ -448,14 +463,15 @@ class Context
     }
 
     /**
-     * @param $text
-     * @param null $keyboard
+     * @param string $text
+     * @param string $keyboard
      * @param array $options
      * @return Message
      * @throws Exception\TeletantException
      */
-    public function editSelf($text, $keyboard = null, $options = []): Message
+    public function editSelf(string $text, string $keyboard = null, array $options = []): Message
     {
+        $text = $this->Formatter()->format($text);
         $fields = ['chat_id' => $this->getChatID(), 'message_id' => $this->getMessageID(), 'text' => $text, 'reply_markup' => (string)$keyboard];
         $fields = $fields + $options;
         return $this->api->editMessageText($fields);
@@ -463,50 +479,53 @@ class Context
     }
 
     /**
-     * @param $text
-     * @param null $keyboard
+     * @param string $text
+     * @param string $keyboard
      * @param bool $disable_web_page_preview
      * @return Message
      * @throws Exception\TeletantException
      */
-    public function editSelfHTML($text, $keyboard = null, $disable_web_page_preview = false): Message
+    public function editSelfHTML(string $text, string $keyboard = null, bool $disable_web_page_preview = false): Message
     {
+        $text = $this->Formatter()->format($text);
         return $this->api->editMessageText(['chat_id' => $this->getChatID(), 'message_id' => $this->getMessageID(), 'text' => $text, 'reply_markup' => (string)$keyboard, 'parse_mode' => 'HTML', 'disable_web_page_preview' => $disable_web_page_preview]);
     }
 
     /**
-     * @param $text
-     * @param null $keyboard
+     * @param string $text
+     * @param string $keyboard
      * @param bool $disable_web_page_preview
      * @return Message
      * @throws Exception\TeletantException
      */
-    public function editSelfMarkdown($text, $keyboard = null, $disable_web_page_preview = false): Message
+    public function editSelfMarkdown(string $text, string $keyboard = null, bool $disable_web_page_preview = false): Message
     {
+        $text = $this->Formatter()->format($text);
         return $this->api->editMessageText(['chat_id' => $this->getChatID(), 'message_id' => $this->getMessageID(), 'text' => $text, 'reply_markup' => (string)$keyboard, 'parse_mode' => 'Markdown', 'disable_web_page_preview' => $disable_web_page_preview]);
     }
 
     /**
-     * @param null $text
+     * @param string $text
      * @param bool $alert
-     * @param null $url
+     * @param string $url
      * @param int $cache
      * @return TeletantHookResponse|TeletantResponse|\Closure
      * @throws Exception\TeletantException
      */
-    public function ansCallback($text = null, $alert = false, $url = null, $cache = 0)
+    public function ansCallback(string $text = null, bool $alert = false, string $url = null, int $cache = 0)
     {
+        $text = $this->Formatter()->format($text);
         return $this->api->answerCallbackQuery(['callback_query_id' => $this->getCallbackID(), 'text' => $text, 'show_alert' => $alert, 'url' => $url, 'cache_time' => $cache]);
     }
 
     /**
-     * @param $id
-     * @param $results
+     * @param string $id
+     * @param string $results
      * @param array $options
      * @return TeletantHookResponse|TeletantResponse|\Closure
      * @throws Exception\TeletantException
      */
-    public function ansInlineQuery($id, $results, $options = [])
+    public function ansInlineQuery(string $id, string $results, array $options = [])
     {
         $fields = ['inline_query_id' => $id, 'results' => (string) $results];
         $fields = $fields+$options;
@@ -514,13 +533,12 @@ class Context
     }
 
     /**
-     * @param $id
-     * @param $results
+     * @param string $results
      * @param array $options
      * @return TeletantHookResponse|TeletantResponse|\Closure
      * @throws Exception\TeletantException
      */
-    public function replyInlineQuery($results, $options = [])
+    public function replyInlineQuery(string $results, array $options = [])
     {
         $fields = ['inline_query_id' => $this->getInlineQueryID(), 'results' => (string) $results];
         $fields = $fields+$options;
@@ -528,32 +546,32 @@ class Context
     }
 
     /**
-     * @param $fileID
+     * @param string $fileID
      * @return File
      * @throws Exception\TeletantException
      */
-    public function getFile($fileID): File
+    public function getFile(string $fileID): File
     {
         return $this->api->getFile(['file_id' => $fileID]);
     }
 
     /**
-     * @param $fileID
+     * @param string $fileID
      * @return File|string
      * @throws Exception\TeletantException
      */
-    public function getFileLink($fileID)
+    public function getFileLink(string $fileID)
     {
         $response = $this->getFile($fileID);
         return ($response->filePath() != null) ? 'https://api.telegram.org/file/bot' . $this->api->getSettings()->getApiToken() . '/' . $response->filePath() : $response;
     }
 
     /**
-     * @param $action
+     * @param string $action
      * @return TeletantHookResponse|TeletantResponse|\Closure
      * @throws Exception\TeletantException
      */
-    public function replyChatAction($action)
+    public function replyChatAction(string $action)
     {
         return $this->api->sendChatAction(['chat_id' => $this->getChatID(), 'action' => $action]);
     }
