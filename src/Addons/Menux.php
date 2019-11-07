@@ -22,7 +22,7 @@ class Menux
     private static $defaultProperties = [];
     private $name;
     private $id;
-    private $source;
+    private $source = [];
     private $rowIndex = 0;
     private $firstRow = true;
     private $type = '';
@@ -70,6 +70,8 @@ class Menux
     public function push(Menux $menu): self
     {
         if($this->type == $menu->type) {
+            if(!array_key_exists($this->type, $this->source)) $this->source[$this->type] = [];
+            if(!array_key_exists($menu->type, $menu->source)) $menu->source[$this->type] = [];
             $this->source[$this->type] = array_merge($this->source[$this->type], $menu->source[$menu->type]);
             return $this;
         } else {
