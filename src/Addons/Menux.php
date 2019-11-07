@@ -40,7 +40,52 @@ class Menux
      */
     public function inline(): self
     {
-        $this->type = 'inline_keyboard';
+        $this->type = self::INLINE_KEYBOARD;
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function default(): self
+    {
+        $this->type = self::KEYBOARD;
+        return $this;
+    }
+
+    /**
+     * @return Menux
+     */
+    public function reset(): self
+    {
+        $this->source[$this->type] = [];
+        return $this;
+    }
+
+    /**
+     * @param Menux $menu
+     * @return Menux
+     * @throws MenuxException
+     */
+    public function push(Menux $menu): self
+    {
+        if($this->type == $menu->type) {
+            $this->source[$this->type] = array_merge($this->source[$this->type], $menu->source[$menu->type]);
+            return $this;
+        } else {
+            throw new MenuxException("'{$this->name}' type and '{$menu->name}' type, do not match");
+        }
+    }
+
+    /**
+     * @param bool $expression
+     * @param Menux $menu
+     * @return Menux
+     * @throws MenuxException
+     */
+    public function pushIf(bool $expression, Menux $menu): self
+    {
+        if($expression) $this->push($menu);
         return $this;
     }
 

@@ -62,8 +62,8 @@ trait EventBuilder
     }
 
     /**
-     * @param string $command
-     * @param callable $handler
+     * @param string $command Command in message text (like /start)
+     * @param callable $handler Event handler function (accepts Context)
      * @return Event
      */
     public function onCommand(string $command, callable $handler)
@@ -87,8 +87,8 @@ trait EventBuilder
 
     /**
      * @param string $text
-     * @param callable $handler
-     * @param callable|null $validator
+     * @param callable $handler Event handler function (accepts Context)
+     * @param callable|null $validator Errors handler function (accepts Context, array of errors)
      * @return Event
      */
     public function onText(string $text, callable $handler, callable $validator = null)
@@ -116,8 +116,8 @@ trait EventBuilder
 
     /**
      * @param string $action
-     * @param callable $handler
-     * @param callable|null $validator
+     * @param callable $handler Event handler function (accepts Context)
+     * @param callable|null $validator Errors handler function (accepts Context, array of errors)
      * @return Event
      */
     public function onAction(string $action, callable $handler, callable $validator = null)
@@ -145,8 +145,8 @@ trait EventBuilder
 
     /**
      * @param $texts
-     * @param callable $handler
-     * @param callable|null $validator
+     * @param callable $handler Event handler function (accepts Context)
+     * @param callable|null $validator Errors handler function (accepts Context, array of errors)
      * @return Event
      * @throws ValidatorException
      */
@@ -183,7 +183,7 @@ trait EventBuilder
 
     /**
      * @param string $field
-     * @param callable $handler
+     * @param callable $handler Event handler function (accepts Context)
      * @return Event
      */
     public function onMessage(string $field, callable $handler)
@@ -200,7 +200,7 @@ trait EventBuilder
 
     /**
      * @param string $field
-     * @param callable $handler
+     * @param callable $handler Event handler function (accepts Context)
      * @return Event
      */
     public function onUpdate(string $field, callable $handler)
@@ -217,8 +217,8 @@ trait EventBuilder
 
     /**
      * @param string $query
-     * @param callable $handler
-     * @param callable|null $validator
+     * @param callable $handler Event handler function (accepts Context)
+     * @param callable|null $validator Errors handler function (accepts Context, array of errors)
      * @return Event
      */
     public function onInlineQuery(string $query, callable $handler, callable $validator = null)
