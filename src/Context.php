@@ -58,11 +58,19 @@ class Context
     /**
      * @param string $variable
      * @param string|null $default
-     * @return string
+     * @return mixed
      */
     public function var(string $variable, string $default = '')
     {
         return $this->variables[$variable] ?? $default;
+    }
+
+    /**
+     * @return array
+     */
+    public function vars(): array
+    {
+        return $this->variables;
     }
 
     /**
@@ -143,6 +151,13 @@ class Context
         return $this;
     }
 
+    public function withVars($prefix = 'v-')
+    {
+        foreach ($this->vars() as $name => $value)
+            $this->Formatter()->associate($prefix.$name, $value ?? '');
+        return $this;
+    }
+
     /**
      * @param Formatter $formatter
      * @return self
@@ -179,6 +194,9 @@ class Context
         return $this->update;
     }
 
+    /**
+     * @return Message
+     */
     public function getMessage(): Message
     {
         if (!$this->editedMessage()->isEmpty())
@@ -190,46 +208,73 @@ class Context
         else return $this->update()->message();
     }
 
+    /**
+     * @return Message
+     */
     public function editedMessage(): Message
     {
         return $this->update()->editedMessage();
     }
 
+    /**
+     * @return InlineQuery
+     */
     public function inlineQuery(): InlineQuery
     {
         return $this->update()->inlineQuery();
     }
 
+    /**
+     * @return ShippingQuery
+     */
     public function shippingQuery(): ShippingQuery
     {
         return $this->update()->shippingQuery();
     }
 
+    /**
+     * @return PreCheckoutQuery
+     */
     public function preCheckoutQuery(): PreCheckoutQuery
     {
         return $this->update()->preCheckoutQuery();
     }
 
+    /**
+     * @return ChosenInlineResult
+     */
     public function chosenInlineResult(): ChosenInlineResult
     {
         return $this->update()->chosenInlineResult();
     }
 
+    /**
+     * @return Message
+     */
     public function channelPost(): Message
     {
         return $this->update()->channelPost();
     }
 
+    /**
+     * @return Message
+     */
     public function editedChannelPost(): Message
     {
         return $this->update()->editedChannelPost();
     }
 
+    /**
+     * @return CallbackQuery
+     */
     public function callbackQuery(): CallbackQuery
     {
         return $this->update()->callbackQuery();
     }
 
+    /**
+     * @return User
+     */
     public function getFrom(): User
     {
         if(!$this->update()->message()->isEmpty())                  return $this->update()->message()->from();
@@ -244,87 +289,138 @@ class Context
         else                                                        return new User([]);
     }
 
+    /**
+     * @return Chat
+     */
     public function getChat(): Chat
     {
         return $this->getMessage()->chat();
     }
 
-    public function getChatType(): string
+    /**
+     * @return string|null
+     */
+    public function getChatType(): ?string
     {
         return $this->getMessage()->chat()->type() ?? '';
     }
 
-    public function getText(): string
+    /**
+     * @return string|null
+     */
+    public function getText(): ?string
     {
         return $this->getMessage()->text() ?? '';
     }
 
-    public function getLowerText(): string
+    /**
+     * @return string|null
+     */
+    public function getLowerText(): ?string
     {
         return mb_strtolower($this->getText());
     }
 
+    /**
+     * @return Sticker
+     */
     public function getSticker(): Sticker
     {
         return $this->getMessage()->sticker();
     }
 
-    public function getChatID(): int
+    /**
+     * @return int|null
+     */
+    public function getChatID(): ?int
     {
         return $this->getChat()->id();
     }
 
-    public function getMessageID(): int
+    /**
+     * @return int|null
+     */
+    public function getMessageID(): ?int
     {
         return $this->getMessage()->messageId();
     }
 
-    public function getCallbackID(): int
+    /**
+     * @return int|null
+     */
+    public function getCallbackID(): ?int
     {
         return $this->callbackQuery()->id();
     }
 
-    public function getUserID(): int
+    /**
+     * @return int|null
+     */
+    public function getUserID(): ?int
     {
         return $this->getFrom()->id();
     }
 
-    public function getUsername(): string
+    /**
+     * @return string|null
+     */
+    public function getUsername(): ?string
     {
         return $this->getFrom()->username() ?? '';
     }
 
-    public function getFromIsBot(): bool
+    /**
+     * @return bool|null
+     */
+    public function getFromIsBot(): ?bool
     {
         return $this->getFrom()->isBot();
     }
 
+    /**
+     * @return string
+     */
     public function getFirstName(): string
     {
         return $this->getFrom()->firstName() ?? '';
     }
 
+    /**
+     * @return string
+     */
     public function getLastName(): string
     {
         return $this->getFrom()->lastName() ?? '';
     }
 
+    /**
+     * @return string
+     */
     public function getFullName(): string
     {
         return $this->getFirstName() . ($this->getLastName() != '' ? ' ' . $this->getLastName() : '');
     }
 
-    public function getLangCode(): string
+    /**
+     * @return string|null
+     */
+    public function getLangCode(): ?string
     {
         return $this->getFrom()->languageCode();
     }
 
-    public function getInlineQueryID(): string
+    /**
+     * @return string|null
+     */
+    public function getInlineQueryID(): ?string
     {
         return $this->inlineQuery()->id();
     }
 
-    public function getInlineMessID()
+    /**
+     * @return string|null
+     */
+    public function getInlineMessID(): ?string
     {
         return $this->chosenInlineResult()->inlineMessageId();
     }

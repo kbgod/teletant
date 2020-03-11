@@ -5,51 +5,66 @@ namespace Askoldex\Teletant\Events;
 
 
 use Askoldex\Teletant\Exception\ValidatorException;
+use Askoldex\Teletant\Interfaces\ValidatorInterface;
+use Askoldex\Teletant\Validators\AnyValidator;
+use Askoldex\Teletant\Validators\CharValidator;
+use Askoldex\Teletant\Validators\FloatValidator;
+use Askoldex\Teletant\Validators\IntegerValidator;
+use Askoldex\Teletant\Validators\StringValidator;
+use Askoldex\Teletant\Validators\WordValidator;
 
 trait Validator
 {
-    protected $types = [
-        'integer' => ['pattern' => '[\d]+', 'spaces' => false],
-        'float' => ['pattern' => '-?\d+(\.\d+)?', 'spaces' => false],
-        'string' => ['pattern' => '[\w\s]+', 'spaces' => true],
-        'word' => ['pattern' => '[\w]+', 'spaces' => false],
-        'any' => ['pattern' => '(.*?)', 'spaces' => false],
-        'char' => ['pattern' => '[\w]', 'spaces' => false],
+    protected $validators = [
+        'integer' => IntegerValidator::class,
+        'float' => FloatValidator::class,
+        'string' => StringValidator::class,
+        'word' => WordValidator::class,
+        'any' => AnyValidator::class,
+        'char' => CharValidator::class,
     ];
 
+
     /**
-     * @param string $type
-     * @param string $pattern
-     * @return $this
+     * @param string $name
+     * @return ValidatorInterface
      */
-    public function addValidationType(string $type, string $pattern)
+    private function getValidator(string $name): ValidatorInterface
     {
-        $this->types[$type] = $pattern;
-        return $this;
+        return new $this->validators[$name];
     }
 
     /**
-     * @param array $types
+     * @param string $name
+     * @param string $validator
      * @return $this
+     * @throws ValidatorException
      */
-    public function addValidationTypes(array $types)
+    public function addValidator(string $name, string $validator)
     {
-        if (count($types) > 0) {
-            foreach ($types as $type => $pattern)
-                $this->addValidationType($type, $pattern);
+        if($name == 'any') {
+            throw new ValidatorException('Validation name "any" cannot be redeclared!');
+        }
+        if(in_array(ValidatorInterface::class, class_implements($validator))) {
+            $this->validators[$name] = $validator;
+        } else {
+            throw new ValidatorException("Wrong validator [{$validator}]. Validator must be implements ValidatorInterface!");
         }
         return $this;
     }
 
     /**
-     * @param string $type
-     * @param string $value
-     * @return bool
+     * @param array $validators
+     * @return $this
+     * @throws ValidatorException
      */
-    protected function validateType(string $type, string $value)
+    public function addValidators(array $validators)
     {
-        preg_match("#(" . $this->types[$type]['pattern'] . ")#", $value, $matches);
-        return isset($matches[1]) ? ($value == $matches[1]) : false;
+        if (count($validators) > 0) {
+            foreach ($validators as $name => $validator)
+                $this->addValidator($name, $validator);
+        }
+        return $this;
     }
 
     /**
@@ -74,9 +89,13 @@ trait Validator
                 $output['errors'][$varInfo['name']] = 'not_specified';
             } else {
                 if ($varInfo['type'] != 'any') {
-                    if ($varValue != null and !$this->validateType($varInfo['type'], $varValue)) {
-                        $output['errors'][$varInfo['name']] = 'invalid_type';
+                    $validator = $this->getValidator($varInfo['type']);
+                    if ($varValue != null and !$validator->validate($varValue)) {
+                        $output['errors'][$varInfo['name']] = $validator->error();
+                    } else {
+                        $output['variables'][$varInfo['name']] = $validator->value();
                     }
+                    unset($validator);
                 }
             }
         }
@@ -97,8 +116,9 @@ trait Validator
             list($variable, $type, $box) = explode(':', $match, 3);
             //$type = $type == null ? 'any' : $type;
             if($type != null) {
-                if(array_key_exists($type, $this->types)) {
-                    $spaces = $this->types[$type]['spaces'];
+                if(array_key_exists($type, $this->validators)) {
+                    $validator = $this->getValidator($type);
+                    $spaces = $validator->spaces();
                 } else {
                     throw new ValidatorException('Undefined validation type "'.$type.'"');
                 }
