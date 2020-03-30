@@ -181,6 +181,11 @@ class Message extends Entity
         return new Venue(parent::_data('venue'));
     }
 
+    public function dice(): Dice
+    {
+        return new Dice(parent::_data('dice'));
+    }
+
     /**
      * @return User[]
      */

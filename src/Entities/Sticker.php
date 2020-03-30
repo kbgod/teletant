@@ -12,6 +12,11 @@ class Sticker extends Entity
         return parent::_data('file_id');
     }
 
+    public function fileUniqueId(): ?string
+    {
+        return parent::_data('file_unique_id');
+    }
+
     public function width(): ?int
     {
         return parent::_data('width');

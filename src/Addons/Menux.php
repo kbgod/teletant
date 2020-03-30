@@ -187,6 +187,22 @@ class Menux
     }
 
     /**
+     * @param $text
+     * @param $type
+     * @return Menux
+     */
+    public function poll($text, $type = ''): self
+    {
+        $this->addButton(self::PollButton($text, $type));
+        return $this;
+    }
+
+    public function quiz($text): self
+    {
+        return $this->poll($text, 'quiz');
+    }
+
+    /**
      * @param string $text
      * @return Menux
      */
@@ -284,6 +300,16 @@ class Menux
     {
         if (is_null($data)) $data = $text;
         return ['text' => $text, 'callback_data' => $data];
+    }
+
+    /**
+     * @param string $text
+     * @param string $type
+     * @return array
+     */
+    public static function PollButton(string $text, string $type): array
+    {
+        return ['text' => $text, 'request_poll' => compact('type')];
     }
 
     /**

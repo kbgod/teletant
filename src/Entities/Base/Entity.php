@@ -45,6 +45,16 @@ class Entity
         return array_key_exists($field, $this->__data);
     }
 
+    public function getField($field, $default = '')
+    {
+        return $this->has($field) ? $field : $default;
+    }
+
+    public function export()
+    {
+        return $this->_data();
+    }
+
     /**
      * @return null|static
      */

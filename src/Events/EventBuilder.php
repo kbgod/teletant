@@ -86,6 +86,63 @@ trait EventBuilder
     }
 
     /**
+     * @param callable $handler Event handler function (accepts Context)
+     * @return Event
+     */
+    public function onStart(callable $handler)
+    {
+        return $this->onCommand('start', $handler);
+    }
+
+    /**
+     * @param callable $handler Event handler function (accepts Context)
+     * @return Event
+     */
+    public function onDice(callable $handler)
+    {
+        $current = $this->currentMiddlewares;
+        return $this->eventHandler->handle(function (Context $ctx) use ($handler, $current) {
+            if (!$ctx->getDice()->isEmpty()) {
+                $this->bootEvent($current, $handler)->handleEvent($ctx);
+                return true;
+            }
+            return false;
+        });
+    }
+
+    /**
+     * @param callable $handler Event handler function (accepts Context)
+     * @return Event
+     */
+    public function onPoll(callable $handler)
+    {
+        $current = $this->currentMiddlewares;
+        return $this->eventHandler->handle(function (Context $ctx) use ($handler, $current) {
+            if (!$ctx->poll()->isEmpty()) {
+                $this->bootEvent($current, $handler)->handleEvent($ctx);
+                return true;
+            }
+            return false;
+        });
+    }
+
+    /**
+     * @param callable $handler Event handler function (accepts Context)
+     * @return Event
+     */
+    public function onPollAnswer(callable $handler)
+    {
+        $current = $this->currentMiddlewares;
+        return $this->eventHandler->handle(function (Context $ctx) use ($handler, $current) {
+            if (!$ctx->pollAnswer()->isEmpty()) {
+                $this->bootEvent($current, $handler)->handleEvent($ctx);
+                return true;
+            }
+            return false;
+        });
+    }
+
+    /**
      * @param string $text
      * @param callable $handler Event handler function (accepts Context)
      * @param callable|null $validator Errors handler function (accepts Context, array of errors)

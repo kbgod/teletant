@@ -12,6 +12,11 @@ class Document extends Entity
         return parent::_data('file_id');
     }
 
+    public function fileUniqueId(): ?string
+    {
+        return parent::_data('file_unique_id');
+    }
+
     public function thumb(): PhotoSize
     {
         return new PhotoSize(parent::_data('thumb'));

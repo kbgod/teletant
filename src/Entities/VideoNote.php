@@ -12,6 +12,11 @@ class VideoNote extends Entity
         return parent::_data('file_id');
     }
 
+    public function fileUniqueId(): ?string
+    {
+        return parent::_data('file_unique_id');
+    }
+
     public function length(): ?int
     {
         return parent::_data('length');

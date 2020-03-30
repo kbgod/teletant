@@ -17,6 +17,11 @@ class ChatMember extends Entity
         return parent::_data('status');
     }
 
+    public function customTitle(): ?string
+    {
+        return parent::_data('custom_title');
+    }
+
     public function untilDate(): ?int
     {
         return parent::_data('until_date');

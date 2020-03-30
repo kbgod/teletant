@@ -32,4 +32,9 @@ class MessageEntity extends Entity
     {
         return new User(parent::_data('user'));
     }
+
+    public function language(): ?string
+    {
+        return parent::_data('language');
+    }
 }

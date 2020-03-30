@@ -31,8 +31,33 @@ class Poll extends Entity
         } else return [];
     }
 
+    public function totalVoterCount(): ?int
+    {
+        return parent::_data('total_voter_count');
+    }
+
     public function isClosed(): ?bool
     {
         return parent::_data('is_closed');
+    }
+
+    public function isAnonymous(): ?bool
+    {
+        return parent::_data('is_anonymous');
+    }
+
+    public function type(): ?string
+    {
+        return parent::_data('type');
+    }
+
+    public function allowsMultipleAnswers(): ?bool
+    {
+        return parent::_data('allows_multiple_answers');
+    }
+
+    public function correctOptionId(): ?int
+    {
+        return parent::_data('correct_option_id');
     }
 }

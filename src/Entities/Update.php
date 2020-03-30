@@ -61,4 +61,9 @@ class Update extends Entity
         return new Poll(parent::_data('poll'));
     }
 
+    public function pollAnswer(): PollAnswer
+    {
+        return new PollAnswer(parent::_data('poll_answer'));
+    }
+
 }

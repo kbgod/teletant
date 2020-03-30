@@ -3,6 +3,7 @@
 namespace Askoldex\Teletant;
 
 
+use Askoldex\Teletant\Entities\BotCommands;
 use Askoldex\Teletant\Entities\Chat;
 use Askoldex\Teletant\Entities\ChatMember;
 use Askoldex\Teletant\Entities\ChatMembers;
@@ -45,7 +46,8 @@ class Api
         'getGameHighScores',
         'getMe',
         'getUserProfilePhotos',
-        'getWebhookInfo'
+        'getWebhookInfo',
+        'getMyCommands',
     ];
 
     public function __construct($settings)
@@ -724,6 +726,26 @@ class Api
 
     /**
      * @param $params
+     * @return Message
+     * @throws TeletantException
+     */
+    public function sendDice($params)
+    {
+        return new Message($this->invokeAction('sendDice', $params));
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function sendDiceAsync(array $params)
+    {
+        return $this->invokeAction('sendDice', $params, false, true);
+    }
+
+    /**
+     * @param $params
      * @return TeletantHookResponse|TeletantResponse|Closure
      * @throws TeletantException
      */
@@ -860,6 +882,26 @@ class Api
     public function promoteChatMemberAsync(array $params)
     {
         return $this->invokeAction('promoteChatMember', $params, false, true);
+    }
+
+    /**
+     * @param $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function setChatAdministratorCustomTitle($params)
+    {
+        return $this->invokeAction('setChatAdministratorCustomTitle', $params);
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function setChatAdministratorCustomTitleAsync(array $params)
+    {
+        return $this->invokeAction('setChatAdministratorCustomTitle', $params, false, true);
     }
 
     /**
@@ -1160,6 +1202,25 @@ class Api
     public function answerCallbackQueryAsync(array $params)
     {
         return $this->invokeAction('answerCallbackQuery', $params, false, true);
+    }
+
+    /**
+     * @param array $params
+     * @return TeletantHookResponse|TeletantResponse|Closure
+     * @throws TeletantException
+     */
+    public function setMyCommands(array $params)
+    {
+        return $this->invokeAction('setMyCommands', $params);
+    }
+
+    /**
+     * @return BotCommands
+     * @throws TeletantException
+     */
+    public function getMyCommands(): BotCommands
+    {
+        return new BotCommands($this->invokeAction('getMyCommands'));
     }
 
     /**

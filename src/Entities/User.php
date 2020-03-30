@@ -37,4 +37,19 @@ class User extends Entity
     {
         return parent::_data('language_code');
     }
+
+    public function canJoinGroups(): ?bool
+    {
+        return parent::_data('can_join_groups');
+    }
+
+    public function canReadAllGroupMessages(): ?bool
+    {
+        return parent::_data('can_read_all_group_messages');
+    }
+
+    public function supportsInlineQueries(): ?bool
+    {
+        return parent::_data('supports_inline_queries');
+    }
 }

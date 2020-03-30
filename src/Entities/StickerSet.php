@@ -41,4 +41,9 @@ class StickerSet extends Entity
             return $stickers;
         } else return [];
     }
+
+    public function thumb(): PhotoSize
+    {
+        return new PhotoSize(parent::_data('thumb'));
+    }
 }

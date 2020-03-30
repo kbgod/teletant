@@ -7,15 +7,19 @@ use Askoldex\Formatter\Formatter;
 use Askoldex\Teletant\Entities\CallbackQuery;
 use Askoldex\Teletant\Entities\Chat;
 use Askoldex\Teletant\Entities\ChosenInlineResult;
+use Askoldex\Teletant\Entities\Dice;
 use Askoldex\Teletant\Entities\File;
 use Askoldex\Teletant\Entities\InlineQuery;
 use Askoldex\Teletant\Entities\Message;
 use Askoldex\Teletant\Entities\Messages;
+use Askoldex\Teletant\Entities\Poll;
+use Askoldex\Teletant\Entities\PollAnswer;
 use Askoldex\Teletant\Entities\PreCheckoutQuery;
 use Askoldex\Teletant\Entities\ShippingQuery;
 use Askoldex\Teletant\Entities\Sticker;
 use Askoldex\Teletant\Entities\Update;
 use Askoldex\Teletant\Entities\User;
+use Askoldex\Teletant\Exception\TeletantException;
 use Askoldex\Teletant\Interfaces\StorageInterface;
 use Askoldex\Teletant\States\Scene;
 use Askoldex\Teletant\States\Stage;
@@ -241,6 +245,22 @@ class Context
     }
 
     /**
+     * @return Poll
+     */
+    public function poll(): Poll
+    {
+        return $this->update()->poll();
+    }
+
+    /**
+     * @return PollAnswer
+     */
+    public function pollAnswer(): PollAnswer
+    {
+        return $this->update()->pollAnswer();
+    }
+
+    /**
      * @return ChosenInlineResult
      */
     public function chosenInlineResult(): ChosenInlineResult
@@ -311,6 +331,22 @@ class Context
     public function getText(): ?string
     {
         return $this->getMessage()->text() ?? '';
+    }
+
+    /**
+     * @return Dice
+     */
+    public function getDice(): Dice
+    {
+        return $this->getMessage()->dice();
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getDiceValue(): ?int
+    {
+        return $this->getMessage()->dice()->value();
     }
 
     /**
@@ -556,6 +592,21 @@ class Context
         $fields = ['chat_id' => $this->getChatID(), 'media' => $media, 'disable_notification' => $disable_notification];
         if ($reply_mode) $fields['reply_to_message_id'] = $this->getMessageID();
         return $this->api->sendMediaGroup($fields);
+    }
+
+
+    /**
+     * @param string|null $keyboard
+     * @param bool $reply_mode
+     * @param bool $disable_notification
+     * @return Message
+     * @throws TeletantException
+     */
+    public function replyDice(string $keyboard = null, bool $reply_mode = false, bool $disable_notification = false): Message
+    {
+        $fields = ['chat_id' => $this->getChatID(), 'disable_notification' => $disable_notification, 'reply_markup' => (string)$keyboard];
+        if ($reply_mode) $fields['reply_to_message_id'] = $this->getMessageID();
+        return $this->api->sendDice($fields);
     }
 
     /**

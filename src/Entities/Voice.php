@@ -12,6 +12,11 @@ class Voice extends Entity
         return parent::_data('file_id');
     }
 
+    public function fileUniqueId(): ?string
+    {
+        return parent::_data('file_unique_id');
+    }
+
     public function duration(): ?int
     {
         return parent::_data('duration');

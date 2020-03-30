@@ -119,6 +119,10 @@ $bot->onText('/message {user:integer} {message:string}', function (Context $ctx)
 
 | Event  | Argument supporting |
 | ------------- | ------------- |
+| onStart  | NO  |
+| onPoll  | NO  |
+| onPollAnswer  | NO  |
+| onDice  | NO  |
 | onText  | YES  |
 | onAction  | YES |
 | onHears  | YES  |
