@@ -239,34 +239,40 @@ trait EventBuilder
     }
 
     /**
-     * @param string $field
+     * @param string $fields Message field name or multiple fields, "|" separated
      * @param callable $handler Event handler function (accepts Context)
      * @return Event
      */
-    public function onMessage(string $field, callable $handler)
+    public function onMessage(string $fields, callable $handler)
     {
+        $fields = explode('|', $fields);
         $current = $this->currentMiddlewares;
-        return $this->eventHandler->handle(function (Context $ctx) use ($field, $handler, $current) {
-            if (!$ctx->getMessage()->isEmpty() and $ctx->getMessage()->has($field)) {
-                $this->bootEvent($current, $handler)->handleEvent($ctx);
-                return true;
+        return $this->eventHandler->handle(function (Context $ctx) use ($fields, $handler, $current) {
+            foreach ($fields as $field) {
+                if (!$ctx->getMessage()->isEmpty() and $ctx->getMessage()->has($field)) {
+                    $this->bootEvent($current, $handler)->handleEvent($ctx);
+                    return true;
+                }
             }
             return false;
         });
     }
 
     /**
-     * @param string $field
+     * @param string $fields Update field name or multiple fields, "|" separated
      * @param callable $handler Event handler function (accepts Context)
      * @return Event
      */
-    public function onUpdate(string $field, callable $handler)
+    public function onUpdate(string $fields, callable $handler)
     {
+        $fields = explode('|', $fields);
         $current = $this->currentMiddlewares;
-        return $this->eventHandler->handle(function (Context $ctx) use ($field, $handler, $current) {
-            if (!$ctx->update()->isEmpty() and $ctx->update()->has($field)) {
-                $this->bootEvent($current, $handler)->handleEvent($ctx);
-                return true;
+        return $this->eventHandler->handle(function (Context $ctx) use ($fields, $handler, $current) {
+            foreach ($fields as $field) {
+                if (!$ctx->update()->isEmpty() and $ctx->update()->has($field)) {
+                    $this->bootEvent($current, $handler)->handleEvent($ctx);
+                    return true;
+                }
             }
             return false;
         });

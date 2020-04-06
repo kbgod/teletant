@@ -3,7 +3,9 @@
 namespace Askoldex\Teletant\Exception;
 
 
-class TeletantException extends \Exception
+use Askoldex\Teletant\Interfaces\TeletantExceptionInterface;
+
+class TeletantException extends \Exception implements TeletantExceptionInterface
 {
 
 }

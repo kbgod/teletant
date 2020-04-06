@@ -20,6 +20,7 @@ use Askoldex\Teletant\Entities\Sticker;
 use Askoldex\Teletant\Entities\Update;
 use Askoldex\Teletant\Entities\User;
 use Askoldex\Teletant\Exception\TeletantException;
+use Askoldex\Teletant\Interfaces\ContextContainerInterface;
 use Askoldex\Teletant\Interfaces\StorageInterface;
 use Askoldex\Teletant\States\Scene;
 use Askoldex\Teletant\States\Stage;
@@ -36,17 +37,24 @@ class Context
      */
     private $api;
 
+    /**
+     * @var ContextContainerInterface $container
+     */
+    private $container;
+
     private $storage;
     private $formatter;
     private $stage;
-    private $variables;
+    private $variables = [];
 
     public function __construct(Update $update, Api $api)
     {
         $this->update = $update;
         $this->api = $api;
-        $this->setFormatter(new Formatter());
-        $this->bootFormatterDefaultAssociations();
+
+        $this->setFormatter(new Formatter())
+             ->setContainer(new ContextContainer($this))
+             ->bootFormatterDefaultAssociations();
     }
 
     /**
@@ -169,6 +177,25 @@ class Context
     public function setFormatter(Formatter $formatter): self
     {
         $this->formatter = $formatter;
+        return $this;
+    }
+
+    /**
+     * @return ContextContainerInterface
+     */
+    public function getContainer(): ContextContainerInterface
+    {
+        return $this->container;
+    }
+
+    /**
+     * @param ContextContainerInterface $container
+     * @return Context
+     */
+    public function setContainer(ContextContainerInterface $container): self
+    {
+        $this->container = $container;
+
         return $this;
     }
 

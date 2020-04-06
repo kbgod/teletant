@@ -11,6 +11,7 @@ class Settings
 
     private $useHookReply = true;
     private $hookOnFirstRequest = true;
+    private $useDependencyInjection = true;
 
     private $proxy = '';
 
@@ -106,5 +107,23 @@ class Settings
     public function setHookOnFirstRequest(bool $hookOnFirstRequest)
     {
         $this->hookOnFirstRequest = $hookOnFirstRequest;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUseDependencyInjection(): bool
+    {
+        return $this->useDependencyInjection;
+    }
+
+    /**
+     * @param bool $useDependencyInjection
+     * @return self
+     */
+    public function setUseDependencyInjection(bool $useDependencyInjection): self
+    {
+        $this->useDependencyInjection = $useDependencyInjection;
+        return $this;
     }
 }

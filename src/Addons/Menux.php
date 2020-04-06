@@ -19,7 +19,11 @@ class Menux
     private static $links = [];
 
     private static $default = self::KEYBOARD;
-    private static $defaultProperties = [];
+
+    private static $defaultProperties = [
+        'resize_keyboard' => true
+    ];
+
     private $name;
     private $id;
     private $source = [];
@@ -152,18 +156,34 @@ class Menux
 
     /**
      * @param string $name
-     * @param string $value
+     * @param mixed $value
      * @return Menux
      */
-    public function property(string $name, string $value): self
+    public function property(string $name, $value): self
     {
         $this->source[$name] = $value;
         return $this;
     }
 
     public function build() {
-        return json_encode($this->source);
+
+        $source = $this->source;
+        if($this->isInlineKeyboard()) {
+            $source = [self::INLINE_KEYBOARD => $source[self::INLINE_KEYBOARD]];
+        }
+        return json_encode($source);
     }
+
+    public function isInlineKeyboard(): bool
+    {
+        return $this->type == self::INLINE_KEYBOARD;
+    }
+
+    public function isDefaultKeyboard(): bool
+    {
+        return $this->type == self::KEYBOARD;
+    }
+
 
     public function getAsObject()
     {
@@ -288,7 +308,9 @@ class Menux
      */
     public static function DefaultProperties(array $properties): void
     {
-        self::$defaultProperties = $properties;
+        foreach ($properties as $property => $value) {
+            self::$defaultProperties[$property] = $value;
+        }
     }
 
     /**
