@@ -31,6 +31,11 @@ class Api
 
     private $settings;
 
+    /**
+     * @var Log $logger
+     */
+    private $logger;
+
     private $hook = false;
 
     private $hook_used = false;
@@ -50,10 +55,10 @@ class Api
         'getMyCommands',
     ];
 
-    public function __construct($settings)
+    public function __construct(Settings $settings, Log $logger)
     {
         $this->setSettings($settings);
-
+        $this->logger = $logger;
         $this->setClient(new Client([
             'base_uri' => $this->getApiUrl(),
             'request.options' => [
@@ -176,12 +181,20 @@ class Api
                 try {
                     $response = $this->sendRequest('POST', $action, $params);
                 } catch (GuzzleException $e) {
+                    $this->logger->error('Api request error',
+                        [
+                            'message' => $e->getMessage(),
+                            'code' => $e->getCode(),
+                            'action' => $action,
+                            'data' => $params,
+                            'multipart' => $multipart
+                        ]
+                    );
                     throw new TeletantException($e->getMessage(), $e->getCode());
                 }
             }
         } catch (RequestException $e) {
             $response = $e->getResponse();
-
             if (!$response instanceof ResponseInterface) {
                 throw new TeletantException($e->getMessage(), $e->getCode());
             }

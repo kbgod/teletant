@@ -3,11 +3,18 @@
 namespace Askoldex\Teletant;
 
 
+use Psr\Log\LoggerInterface;
+
 class Settings
 {
     private $api_token = '';
 
     private $base_uri = 'https://api.telegram.org/';
+
+    /**
+     * @var LoggerInterface|null $logger
+     */
+    private $logger = null;
 
     private $useHookReply = true;
     private $hookOnFirstRequest = true;
@@ -18,6 +25,25 @@ class Settings
     public function __construct(string $api_token = null)
     {
         $this->setApiToken($api_token);
+    }
+
+    /**
+     * @param LoggerInterface $logger
+     * @return self
+     */
+    public function setLogger(LoggerInterface $logger): self
+    {
+        $this->logger = $logger;
+
+        return $this;
+    }
+
+    /**
+     * @return LoggerInterface|null
+     */
+    public function getLogger(): ?LoggerInterface
+    {
+        return $this->logger;
     }
 
 

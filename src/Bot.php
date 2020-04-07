@@ -18,16 +18,27 @@ class Bot
     private $ctx;
 
     /**
+     * @var Log
+     */
+    private $logger;
+
+    /**
      * @var callable
      */
     protected $eventProcessor;
 
     public function __construct(Settings $settings)
     {
-        $this->setApi(new Api($settings));
+        $this->logger = new Log($settings->getLogger());
+        $this->setApi(new Api($settings, $this->logger));
 
         /* Initialize Traits */
         $this->bootEventBuilder();
+    }
+
+    public function logger(): Log
+    {
+        return $this->logger;
     }
 
     /**
@@ -68,6 +79,7 @@ class Bot
 
     private function handleUpdate(Update $update)
     {
+        $this->logger->debug('Received update:', $update->export());
         $this->setCtx(new Context($update, $this->Api()));
         $bot = $this;
         $this->eventProcessor = function (Context $ctx) use ($bot) {
@@ -84,6 +96,7 @@ class Bot
      */
     public function polling()
     {
+        $this->logger->info('Bot started as long poll');
         $update_id = 0;
         while (true) {
             $updates = $this->Api()->getUpdates(['offset' => $update_id, 'timeout' => 600]);
