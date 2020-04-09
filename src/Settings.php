@@ -11,6 +11,8 @@ class Settings
 
     private $base_uri = 'https://api.telegram.org/';
 
+    private $clientOptions = [];
+
     /**
      * @var LoggerInterface|null $logger
      */
@@ -150,6 +152,24 @@ class Settings
     public function setUseDependencyInjection(bool $useDependencyInjection): self
     {
         $this->useDependencyInjection = $useDependencyInjection;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getClientOptions(): array
+    {
+        return $this->clientOptions;
+    }
+
+    /**
+     * @param array $clientOptions
+     * @return self
+     */
+    public function setClientOptions(array $clientOptions): self
+    {
+        $this->clientOptions = $clientOptions;
         return $this;
     }
 }

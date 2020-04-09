@@ -59,12 +59,11 @@ class Api
     {
         $this->setSettings($settings);
         $this->logger = $logger;
-        $this->setClient(new Client([
+        $this->setClient(new Client(array_replace_recursive([
             'base_uri' => $this->getApiUrl(),
-            'request.options' => [
-                'proxy' => $this->getSettings()->getProxy(),
-            ],
-        ]));
+            'proxy' => $this->getSettings()->getProxy(),
+            'connect_timeout' => 10
+        ], $settings->getClientOptions())));
     }
 
     /**
