@@ -10,7 +10,7 @@ use Askoldex\Teletant\Interfaces\ContextContainerInterface;
 class ContextContainer implements ContextContainerInterface
 {
 
-    private $container;
+    private $container = [];
 
     /**
      * @var Context $ctx
