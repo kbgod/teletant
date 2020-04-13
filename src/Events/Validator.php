@@ -131,6 +131,11 @@ trait Validator
         return $default ? '#^' .$pattern. '$#ui' : $pattern;
     }
 
+    /**
+     * @param $field
+     * @return mixed
+     * @throws ValidatorException
+     */
     protected function parseField($field)
     {
         preg_match_all("#{(.*?)}#", $field, $matches);
@@ -146,7 +151,13 @@ trait Validator
             $patternLen = $position + strlen('{' . $match . '}');
             $isRequired = mb_substr($match, -1) == '?' ? false : true;
             $len = $isRequired ? mb_strlen($match) : mb_strlen($match) - 1;
-            list($variable, $type, $box) = explode(':', mb_substr($match, 0, $len), 3);
+            $variableParameters = explode(':', mb_substr($match, 0, $len), 3);
+            $variable = $variableParameters[0] ?? null;
+            if($variable == null) {
+                throw new ValidatorException('Variable name cannot be empty. Variable position: ' . $index);
+            }
+            $type = $variableParameters[1] ?? null;
+            $box = $variableParameters[2] ?? null;
             $type = $type == null ? 'any' : $type;
             $vars[] = [
                 'name' => $variable,
