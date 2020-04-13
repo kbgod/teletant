@@ -82,7 +82,7 @@ trait Validator
                 $boxLen = mb_strlen($varInfo['box']);
                 $varValue = mb_substr($parsedVariables[$varInfo['name']], $boxLen, -$boxLen);
             } else {
-                $varValue = $parsedVariables[$varInfo['name']];
+                $varValue = $parsedVariables[$varInfo['name']] ?? null;
             }
             $output['variables'][$varInfo['name']] = $varValue;
             if($varInfo['required'] == true and $varValue == null) {
