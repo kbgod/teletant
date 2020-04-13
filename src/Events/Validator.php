@@ -113,8 +113,11 @@ trait Validator
         preg_match_all("#{(.*?)}#", $pattern, $matches);
         $matches = $matches[1];
         foreach ($matches as $match) {
-            list($variable, $type, $box) = explode(':', $match, 3);
-            //$type = $type == null ? 'any' : $type;
+            $variableParameters = explode(':', $match, 3);
+            $variable = $variableParameters[0] ?? null;
+            $type = $variableParameters[1] ?? null;
+            $box = $variableParameters[2] ?? null;
+            $type = $type == null ? 'any' : $type;
             if($type != null) {
                 if(array_key_exists($type, $this->validators)) {
                     $validator = $this->getValidator($type);
