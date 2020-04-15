@@ -6,6 +6,7 @@ namespace Askoldex\Teletant\Addons;
 
 use Askoldex\Teletant\Context;
 use Askoldex\Teletant\Exception\MenuxException;
+use Askoldex\Teletant\States\Scene;
 
 class Menux
 {
@@ -253,9 +254,25 @@ class Menux
         return $this;
     }
 
+    /**
+     * @param string $text
+     * @param Menux $menu
+     * @return Menux
+     */
     public function menu(string $text, Menux $menu): self
     {
         $this->addButton(self::MenuButton($text, $this, $menu));
+        return $this;
+    }
+
+    /**
+     * @param string $text
+     * @param string|Scene $scene
+     * @return Menux
+     */
+    public function scene(string $text, $scene): self
+    {
+        $this->addButton(self::SceneButton($text, $scene, $this));
         return $this;
     }
 
@@ -373,16 +390,37 @@ class Menux
 
     /**
      * @param string $text
-     * @param Menux $withMenu
+     * @param Menux $fromMenu
      * @param Menux $toMenu
      * @return array
      */
-    public static function MenuButton(string $text, Menux $withMenu, Menux $toMenu): array
+    public static function MenuButton(string $text, Menux $fromMenu, Menux $toMenu): array
     {
-        if($withMenu->type == self::KEYBOARD) {
-            self::$associations[$text] = [$toMenu->id, $withMenu->id];
+        if($fromMenu->isDefaultKeyboard()) {
+            self::$associations[$text] = [
+                'type' => 'menus',
+                'payload' => ['to' => $toMenu->id]
+            ];
             return self::Button($text);
-        } else return self::Button($text, 'menux/' . $toMenu->id . '/' . $withMenu->id);
+        } else return self::Button($text, 'menux/' . $toMenu->id . '/' . $fromMenu->id);
+    }
+
+    /**
+     * @param string $text
+     * @param string|Scene $scene
+     * @param Menux|null $fromMenu
+     * @return array
+     */
+    public static function SceneButton(string $text, $scene, Menux $fromMenu = null): array
+    {
+        $scene = $scene instanceof Scene ? $scene->getName() : $scene;
+        if($fromMenu instanceof Menux) {
+            if($fromMenu->isDefaultKeyboard()) {
+                self::$associations[$text] = ['type' => 'scene', 'payload' => compact('scene')];
+                return self::Button($text);
+            }
+        }
+        return self::Button($text, 'menux_scene/' . $scene);
     }
 
     /**
@@ -401,22 +439,38 @@ class Menux
                 $data = explode('/', $ctx->callbackQuery()->data(), 3);
                 if(count($data) == 3 and $data[0] == 'menux') {
                     $toMenu = self::$menus[$data[1]];
-                    $withMenu = self::$menus[$data[2]];
-                    if($withMenu->type == self::KEYBOARD) {
+                    $fromMenu = self::$menus[$data[2]];
+                    if($fromMenu->isDefaultKeyboard()) {
                         $ctx->reply($toMenu->name, $toMenu);
                     } else {
-                        if($toMenu->type == self::KEYBOARD) {
+                        if($toMenu->isDefaultKeyboard()) {
                             $ctx->reply($toMenu->name, $toMenu);
                         } else $ctx->editSelf($toMenu->name, $toMenu);
                     }
                     return true;
                 }
+
+                if(count($data) == 2 and $data[0] == 'menux_scene') {
+                    $ctx->enter($data[1]);
+                    return true;
+                }
             }
+
             if(count(self::$associations) > 0 and $ctx->getText() != '') {
                 if(isset(self::$associations[$ctx->getText()])) {
-                    $menus = self::$associations[$ctx->getText()];
-                    $toMenu = self::$menus[$menus[0]];
-                    $ctx->reply($toMenu->name, $toMenu);
+                    $association = self::$associations[$ctx->getText()];
+                    switch ($association['type']) {
+                        case 'menus':
+                            $menus = $association['payload'];
+                            $toMenu = self::$menus[$menus['to']];
+                            $ctx->reply($toMenu->name, $toMenu);
+                            break;
+
+                        case 'scene':
+                            var_dump($association);
+                            $ctx->enter($association['payload']['scene']);
+                            break;
+                    }
                     return true;
                 }
             }

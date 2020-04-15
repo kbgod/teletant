@@ -2,7 +2,7 @@
     "name": "askoldex/teletant",
     "description": "Telegram bot framework",
     "type": "library",
-    "version": "1.3.6",
+    "version": "1.4.0",
     "keywords": ["telegram", "teletant", "telebot", "bot", "PHP", "video", "stickers", "audio", "files"],
     "require": {
         "php": "^7.2",

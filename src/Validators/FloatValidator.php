@@ -15,6 +15,11 @@ class FloatValidator implements ValidatorInterface
         $this->pattern = '-?\d+(\.\d+)?';
     }
 
+    public function value()
+    {
+        return (float) $this->value;
+    }
+
     /**
      * @return bool
      */

@@ -28,6 +28,16 @@ class Stage
     }
 
     /**
+     * @param Scene[] ...$scenes
+     */
+    public function addScenes(...$scenes)
+    {
+        foreach ($scenes as $scene) {
+            $this->addScene($scene);
+        }
+    }
+
+    /**
      * @param Context $ctx
      * @throws StageException
      */
@@ -91,12 +101,12 @@ class Stage
     {
         $stage = &$this;
         return function (Context $ctx, $next) use ($stage) {
-            if($ctx->Storage() == null) throw new StageException('Setup Storage in Context for using Stage');
+            if ($ctx->Storage() == null) throw new StageException('Setup Storage in Context for using Stage');
             $ctx->setStage($stage);
-            if($ctx->Storage()->getScene() != '') {
-                $this->eventProcessor = function(Context $ctx) {
-                    foreach($ctx->Stage()->scene($ctx)->eventHandler()->getEvents() as $event) {
-                        if($event->invoke($ctx) == true) break;
+            if ($ctx->Storage()->getScene() != '') {
+                $this->eventProcessor = function (Context $ctx) {
+                    foreach ($ctx->Stage()->scene($ctx)->eventHandler()->getEvents() as $event) {
+                        if ($event->invoke($ctx) == true) break;
                     }
                 };
                 $this->boot()->run($ctx);

@@ -69,12 +69,21 @@ class Context
 
     /**
      * @param string $variable
-     * @param string|null $default
+     * @param mixed $default
      * @return mixed
      */
-    public function var(string $variable, string $default = '')
+    public function var(string $variable, $default = '')
     {
         return $this->variables[$variable] ?? $default;
+    }
+
+    /**
+     * @param string $variable
+     * @return bool
+     */
+    public function hasVar(string $variable): bool
+    {
+        return array_key_exists($variable, $this->variables);
     }
 
     /**

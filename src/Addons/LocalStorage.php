@@ -18,6 +18,7 @@ class LocalStorage implements StorageInterface {
     public function boot(Context $ctx)
     {
         $this->ctx = $ctx;
+        return $this;
     }
 
     public function setScene(string $sceneName)

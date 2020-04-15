@@ -112,52 +112,62 @@ trait EventDispatcher
         $parameterType = $parameter->getType();
         if($parameterType instanceof ReflectionNamedType) {
             $entry = $parameterType->getName();
-            if(!class_exists($entry)) {
-                if($parameter->isDefaultValueAvailable()) {
-                    return $parameter->getDefaultValue();
-                } else {
-                    if($ctx->getContainer()->has($parameter->getName())) {
-                        return $ctx->getContainer()->get($parameter->getName());
-                    }
-                    throw new ContextContainerException(
-                        'Internal error: Failed to retrieve the default value '.
-                                'for ' . $parameter->getName() . ' [Function: ' . $parameter->getDeclaringFunction() . ']'
-                    );
-                }
-            }
         } else {
             $entry = $parameter->getName();
         }
-        return $this->injectDependency($entry, $ctx);
+        return $this->injectDependency($entry, $parameter, $ctx);
     }
 
     /**
-     * @param $entry
+     * @param $entryType
+     * @param ReflectionParameter $parameter
      * @param Context $ctx
      * @return mixed
-     * @throws ReflectionException
      * @throws ContextContainerException
+     * @throws ReflectionException
      */
-    private function injectDependency($entry, Context $ctx)
+    private function injectDependency($entryType, ReflectionParameter $parameter, Context $ctx)
     {
-        if($entry == Context::class) {
+        $entryName = $parameter->getName();
+
+        if($entryType == Context::class) {
             return $ctx;
         }
 
-        if($ctx->getContainer()->has($entry)) {
-            return $ctx->getContainer()->get($entry);
+        if($ctx->getContainer()->has($entryType)) {
+            return $ctx->getContainer()->get($entryType);
         }
 
-        $reflector = new ReflectionClass($entry);
-        $constructor = $reflector->getConstructor();
-        $methodArguments = [];
-        if ($constructor instanceof ReflectionMethod) {
-            foreach ($constructor->getParameters() as $parameter) {
-                $methodArguments[] = $this->prepareParameter($parameter, $ctx);
+        if($ctx->hasVar($entryName)) {
+            $default = $parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : '';
+            $entry = $ctx->var($entryName, $default);
+            return $entry;
+        }
+
+        if(class_exists($entryType)) {
+            $reflector = new ReflectionClass($entryType);
+            $constructor = $reflector->getConstructor();
+            $methodArguments = [];
+            if ($constructor instanceof ReflectionMethod) {
+                foreach ($constructor->getParameters() as $parameter) {
+                    $methodArguments[] = $this->prepareParameter($parameter, $ctx);
+                }
+                return $reflector->newInstanceArgs($methodArguments);
+            } else {
+                return new $entryType;
             }
-            return $reflector->newInstanceArgs($methodArguments);
         } else {
-            return new $entry;
+            if($ctx->getContainer()->has($entryName)) {
+                return $ctx->getContainer()->get($entryName);
+            } else {
+                if($parameter->isDefaultValueAvailable()) {
+                    return $parameter->getDefaultValue();
+                }
+                throw new ContextContainerException(
+                    'Internal error: Failed to retrieve the default value '.
+                    'for ' . $entryName . ' [Function: ' . $parameter->getDeclaringFunction() . ']'
+                );
+            }
         }
     }
 }

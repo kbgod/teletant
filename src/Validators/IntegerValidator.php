@@ -15,6 +15,11 @@ class IntegerValidator implements ValidatorInterface
         $this->pattern = '[\d]+';
     }
 
+    public function value()
+    {
+        return (int) $this->value;
+    }
+
     /**
      * @return bool
      */

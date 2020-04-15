@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2020-04-15
+### Added
+
+- Menux method scene(string $text, string|Scene $scene) (Working only with Menux::middleware())
+- Stage method addScenes(...$scenes) - for multiple scene binding
+- Context method hasVar($variable) - check optional template variable.
+- Added reflection for template variables.
+
+### Fixed
+
+- IntegerValidator, FloatValidator - value casting
+- Context method var (fixed default value type (string to mixed))
+
 ## [1.3.4 - 1.3.6] - 2020-04-13
 ### Fixed
 
