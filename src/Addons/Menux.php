@@ -467,7 +467,6 @@ class Menux
                             break;
 
                         case 'scene':
-                            var_dump($association);
                             $ctx->enter($association['payload']['scene']);
                             break;
                     }
