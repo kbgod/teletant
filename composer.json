@@ -2,12 +2,12 @@
     "name": "askoldex/teletant",
     "description": "Telegram bot framework",
     "type": "library",
-    "version": "1.4.1",
+    "version": "1.4.3",
     "keywords": ["telegram", "teletant", "telebot", "bot", "PHP", "video", "stickers", "audio", "files"],
     "require": {
         "php": "^7.2",
-        "guzzlehttp/guzzle": "*",
-        "askoldex/formatter": "*",
+        "guzzlehttp/guzzle": "6.5.2",
+        "askoldex/formatter": "1.0.3",
         "ext-mbstring": "*",
         "ext-json": "*",
         "psr/log": "^1.1.3"
