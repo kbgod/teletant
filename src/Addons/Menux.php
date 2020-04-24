@@ -208,6 +208,24 @@ class Menux
     }
 
     /**
+     * @return Menux
+     */
+    public function dice(): self
+    {
+        $this->addButton(self::Button("\xF0\x9F\x8E\xB2"));
+        return $this;
+    }
+
+    /**
+     * @return Menux
+     */
+    public function darts(): self
+    {
+        $this->addButton(self::Button("\xF0\x9F\x8E\xAF"));
+        return $this;
+    }
+
+    /**
      * @param $text
      * @param $type
      * @return Menux

@@ -646,6 +646,24 @@ class Context
     }
 
     /**
+     * @param string|null $keyboard
+     * @param bool $reply_mode
+     * @param bool $disable_notification
+     * @return Message
+     * @throws TeletantException
+     */
+    public function replyDarts(string $keyboard = null, bool $reply_mode = false, bool $disable_notification = false): Message
+    {
+        $fields = [
+            'chat_id' => $this->getChatID(),
+            'emoji' => "\xF0\x9F\x8E\xAF",
+            'disable_notification' => $disable_notification,
+            'reply_markup' => (string)$keyboard];
+        if ($reply_mode) $fields['reply_to_message_id'] = $this->getMessageID();
+        return $this->api->sendDice($fields);
+    }
+
+    /**
      * @param string $text
      * @param string $keyboard
      * @param array $options

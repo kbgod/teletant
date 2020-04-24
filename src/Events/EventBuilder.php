@@ -98,11 +98,43 @@ trait EventBuilder
      * @param callable $handler Event handler function (accepts Context)
      * @return Event
      */
-    public function onDice(callable $handler)
+    public function onAnyDice(callable $handler)
     {
         $current = $this->currentMiddlewares;
         return $this->eventHandler->handle(function (Context $ctx) use ($handler, $current) {
             if (!$ctx->getDice()->isEmpty()) {
+                $this->bootEvent($current, $handler)->handleEvent($ctx);
+                return true;
+            }
+            return false;
+        });
+    }
+
+    /**
+     * @param callable $handler Event handler function (accepts Context)
+     * @return Event
+     */
+    public function onDice(callable $handler)
+    {
+        $current = $this->currentMiddlewares;
+        return $this->eventHandler->handle(function (Context $ctx) use ($handler, $current) {
+            if (!$ctx->getDice()->isEmpty() and $ctx->getDice()->isDice()) {
+                $this->bootEvent($current, $handler)->handleEvent($ctx);
+                return true;
+            }
+            return false;
+        });
+    }
+
+    /**
+     * @param callable $handler Event handler function (accepts Context)
+     * @return Event
+     */
+    public function onDarts(callable $handler)
+    {
+        $current = $this->currentMiddlewares;
+        return $this->eventHandler->handle(function (Context $ctx) use ($handler, $current) {
+            if (!$ctx->getDice()->isEmpty() and $ctx->getDice()->isDarts()) {
                 $this->bootEvent($current, $handler)->handleEvent($ctx);
                 return true;
             }
