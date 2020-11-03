@@ -146,6 +146,22 @@ trait EventBuilder
      * @param callable $handler Event handler function (accepts Context)
      * @return Event
      */
+    public function onSlotMachine(callable $handler)
+    {
+        $current = $this->currentMiddlewares;
+        return $this->eventHandler->handle(function (Context $ctx) use ($handler, $current) {
+            if (!$ctx->getDice()->isEmpty() and $ctx->getDice()->isSlotMachine()) {
+                $this->bootEvent($current, $handler)->handleEvent($ctx);
+                return true;
+            }
+            return false;
+        });
+    }
+
+    /**
+     * @param callable $handler Event handler function (accepts Context)
+     * @return Event
+     */
     public function onPoll(callable $handler)
     {
         $current = $this->currentMiddlewares;

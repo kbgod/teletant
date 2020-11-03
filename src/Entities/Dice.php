@@ -32,6 +32,26 @@ class Dice extends Entity
     }
 
     /**
+     * @return bool
+     */
+    public function isSlotMachine(): bool
+    {
+        return parent::_data('emoji') == "\xF0\x9F\x8E\xB0";
+    }
+
+    protected $slots = [
+        0 => 'bar',
+        1 => 'grape',
+        2 => 'lemon',
+        3 => 'seven',
+    ];
+
+    public function getSlots(): Slots
+    {
+        return new Slots($this->value());
+    }
+
+    /**
      * @return int|null
      */
     public function value(): ?int

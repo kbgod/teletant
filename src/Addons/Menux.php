@@ -216,6 +216,13 @@ class Menux
         return $this;
     }
 
+    public function slotMachine(): self
+    {
+        $this->addButton(self::Button("\xF0\x9F\x8E\xB0"));
+
+        return $this;
+    }
+
     /**
      * @return Menux
      */
