@@ -6,7 +6,7 @@
     "keywords": ["telegram", "teletant", "telebot", "bot", "PHP", "video", "stickers", "audio", "files"],
     "require": {
         "php": "^7.2",
-        "guzzlehttp/guzzle": "6.5.2",
+        "guzzlehttp/guzzle": "7.2",
         "askoldex/formatter": "1.0.3",
         "ext-mbstring": "*",
         "ext-json": "*",
